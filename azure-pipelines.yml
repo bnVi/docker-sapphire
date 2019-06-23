@@ -1,0 +1,11 @@
+ pool:                                                                            
+   vmImage: 'ubuntu-latest'                                                       
+                                                                                  
+ variables:                                                                       
+   version: 0.0.1                                                                 
+                                                                                  
+ steps:                                                                           
+ - task: CmdLine@2                                                                
+   displayName: Docker build                                                      
+   inputs:                                                                        
+     script:  docker build -t bnvi/sapphire-base:$(version) base 

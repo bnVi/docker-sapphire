@@ -1,0 +1,11 @@
+FROM archlinux/base as build
+RUN pacman -Sy --noconfirm --needed git base-devel cmake boost-libs libmariadbclient
+RUN git clone --recursive https://github.com/SapphireServer/Sapphire.git
+WORKDIR Sapphire/build
+RUN cmake ..
+RUN make -j$(nproc)
+
+FROM archlinux/base
+RUN pacman -Sy --noconfirm libmariadbclient
+WORKDIR sapphire/bin
+COPY --from=build /Sapphire/build/bin/ ./
