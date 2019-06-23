@@ -1,11 +1,15 @@
 pool:                                                                            
-  vmImage: 'ubuntu-latest'                                                       
-                                                                                  
-steps:                                                                           
+  vmImage: 'ubuntu-latest'
+  
+variables:
+  sapphire_commit: fb4b8d2
+
+name: $(sapphire_commit)-$(Rev:r)
+steps:
 - task: CmdLine@2                                                                
   displayName: Docker build                                                      
   inputs:                                                                        
-    script: docker build -t bnvi/sapphire:$(Build.SourceBranchName) . 
+    script: docker build --build-arg CHECKOUT=$(sapphire_commit) -t bnvi/sapphire:$(Build.BuildNumber) . 
 
 - task: Docker@2
   condition: succeeded()
@@ -14,4 +18,4 @@ steps:
     containerRegistry: dockerhub
     command: push
     repository: bnvi/sapphire
-    tags: $(Build.SourceBranchName)
+    tags: $(Build.BuildNumber)
