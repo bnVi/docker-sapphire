@@ -12,7 +12,7 @@ steps:
     script: docker build --build-arg CHECKOUT=$(sapphire_commit) -t bnvi/sapphire:$(Build.BuildNumber) . 
 
 - task: Docker@2
-  condition: succeeded()
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   displayName: Docker push
   inputs:
     containerRegistry: dockerhub
