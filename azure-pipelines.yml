@@ -1,11 +1,17 @@
- pool:                                                                            
-   vmImage: 'ubuntu-latest'                                                       
+pool:                                                                            
+  vmImage: 'ubuntu-latest'                                                       
                                                                                   
- variables:                                                                       
-   version: 0.0.1                                                                 
-                                                                                  
- steps:                                                                           
- - task: CmdLine@2                                                                
-   displayName: Docker build                                                      
-   inputs:                                                                        
-     script:  docker build -t bnvi/sapphire-base:$(version) base 
+steps:                                                                           
+- task: CmdLine@2                                                                
+  displayName: Docker build                                                      
+  inputs:                                                                        
+    script: docker build -t bnvi/sapphire:$(Build.SourceBranchName) . 
+
+- task: Docker@2
+  condition: and(succeeded(), contains(variables['Build.SourceBranch'], 'refs/tags/'))
+  displayName: Docker push
+  inputs:
+    containerRegistry: dockerhub
+    command: push
+    repository: bnvi/sapphire
+    tags: $(Build.SourceBranchName)

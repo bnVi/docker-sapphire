@@ -6,6 +6,7 @@ RUN cmake ..
 RUN make -j$(nproc)
 
 FROM archlinux/base
-RUN pacman -Sy --noconfirm libmariadbclient
-WORKDIR sapphire/bin
+RUN pacman -Sy --noconfirm gcc libmariadbclient
+WORKDIR /opt/sapphire/bin
 COPY --from=build /Sapphire/build/bin/ ./
+ENV PATH="/opt/sapphire/bin:${PATH}"
