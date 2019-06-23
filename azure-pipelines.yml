@@ -8,7 +8,7 @@ steps:
     script: docker build -t bnvi/sapphire:$(Build.SourceBranchName) . 
 
 - task: Docker@2
-  condition: and(succeeded(), contains(variables['Build.SourceBranch'], 'refs/tags/'))
+  condition: succeeded()
   displayName: Docker push
   inputs:
     containerRegistry: dockerhub
