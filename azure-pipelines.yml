@@ -2,7 +2,7 @@ pool:
   vmImage: 'ubuntu-latest'
   
 variables:
-  sapphire_commit: fb4b8d2
+  sapphire_commit: 93e4ced
 
 name: $(sapphire_commit)-$(Rev:r)
 steps:
